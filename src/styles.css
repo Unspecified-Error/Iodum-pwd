@@ -1,0 +1,146 @@
+/* burn 训练仪表盘风格：黑底 + 金色 + 白 + 红/蓝 */
+:root {
+  --bg: #0b0f14;
+  --panel: #10151d;
+  --border: #2a3040;
+  --gold: #daa520;
+  --white: #e8e8e8;
+  --dim: #787880;
+  --red: #e74c3c;
+  --blue: #6495ed;
+  --mono: "Cascadia Mono", Consolas, "JetBrains Mono", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root { height: 100%; }
+
+html, body, #root {
+  min-height: 690px;
+  min-width: 1165px;
+  max-height: 690px;
+  max-width: 1165px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--mono);
+  font-size: 14px;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.dash { display: flex; flex-direction: column; height: 100%; padding: 10px; gap: 10px; }
+.dash-main { display: flex; gap: 10px; flex: 1; min-height: 0; }
+
+.col-left { width: 380px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.col-right { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  overflow: hidden;
+}
+.card.grow { flex: 1; min-height: 0; overflow: auto; }
+
+h2 { font-size: 12px; color: var(--gold); font-weight: 700; margin-bottom: 8px; letter-spacing: 0.5px; }
+
+/* 标题嵌在边框线上的卡片（仿 TUI 的 ┌ Title────┐） */
+fieldset.card {
+  min-inline-size: 0; /* 修正 fieldset 在 flex 布局中的默认 min-content 宽度 */
+}
+.card legend {
+  font: inherit;
+  font-size: 12px;
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 0 8px;
+  margin-left: 8px;
+}
+
+.section-name {
+  color: var(--gold); font-size: 15px; font-weight: 700;
+  margin: 10px 0 4px; display: flex; align-items: center; gap: 8px;
+}
+.mini-actions { margin-left: auto; display: flex; gap: 6px; }
+.mini-actions button {
+  background: transparent; border: 1px solid var(--border); color: var(--dim);
+  font-family: var(--mono); font-size: 11px; padding: 1px 8px; border-radius: 4px; cursor: pointer;
+}
+.mini-actions button:hover { color: var(--gold); border-color: var(--gold); }
+
+.kv { display: flex; gap: 6px; padding: 1px 0; }
+.kv .k { color: var(--gold); font-size: 12px; min-width: 96px; font-weight: 500; }
+.kv .k::after { content: " :"; color: var(--dim); font-weight: 400; }
+.kv .v { color: var(--white); font-weight: 700; }
+
+.seed-input {
+  resize: none;
+  width: 100%; background: #0b0f14; border: 1px solid var(--border); border-radius: 4px;
+  height: 60px;
+  color: var(--white); font-family: var(--mono); font-size: 14px; padding: 5px 8px; outline: none;
+  user-select: text;
+}
+.seed-input:focus { border-color: var(--gold); }
+.seed-input::placeholder { color: var(--dim); }
+
+.seed-input::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.password-line {
+  background: #0b0f14; border: 1px solid var(--border); border-radius: 4px;
+  height: 70px;
+  padding: 6px 8px; min-height: 32px; line-height: 1.5; word-break: break-all;
+  font-size: 14px; user-select: text; cursor: pointer;
+}
+
+.dim { color: var(--dim); }
+
+/* 图表 */
+.tabs { display: flex; justify-content: center; gap: 4px; margin-bottom: 4px; }
+.tab {
+  background: transparent; border: none; color: var(--dim); font-family: var(--mono);
+  font-size: 13px; padding: 2px 10px; cursor: pointer;
+}
+.tab.active { color: var(--gold); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+
+.chart-title { text-align: center; color: var(--white); font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.chart-area { flex: 1; min-height: 0; display: flex; }
+.chart-fill { flex: 1; min-width: 0; width: 100%; height: 100%; display: flex; }
+.chart-fill svg { display: block; }
+.axis { fill: var(--dim); font-size: 11px; font-family: var(--mono); }
+.chart-empty { margin: auto; color: var(--dim); display: flex; align-items: center; justify-content: center; }
+
+.charset { width: 100%; display: flex; flex-direction: column; gap: 18px; justify-content: center; padding: 0 30px; }
+.charset-row { display: flex; align-items: center; gap: 12px; }
+.charset-label { width: 90px; color: var(--white); font-weight: 700; }
+.charset-track { flex: 1; height: 14px; background: #0b0f14; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+.charset-bar { height: 100%; transition: width 0.15s ease; }
+
+.seeds { width: 100%; overflow: auto; padding: 0 20px; }
+.seeds-head, .seeds-row {
+  display: grid; grid-template-columns: 48px 1fr 70px 110px; gap: 8px; padding: 3px 0;
+}
+.seeds-head { color: var(--gold); font-weight: 700; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.seeds-row .seed-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--white); }
+
+/* 底部进度条 */
+.progress-row { display: flex; align-items: center; gap: 14px; }
+.progress-track {
+  position: relative; flex: 1; height: 26px;
+  background: #0b0f14; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+}
+.progress-fill { height: 100%; background: var(--gold); transition: width 0.12s ease; }
+.progress-label {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-weight: 700; font-size: 13px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+.progress-bits { color: var(--white); font-weight: 700; white-space: nowrap; }

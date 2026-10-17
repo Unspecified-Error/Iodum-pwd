@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Iodum 标志：I + 上标 P，burn 配色（黑底 / 金 / 白） -->
+  <rect x="4" y="4" width="120" height="120" rx="26" fill="#0b0f14" stroke="#2a3040" stroke-width="2"/>
+
+  <!-- 主字母 I：衬线三段式，金色 -->
+  <g fill="#daa520">
+    <rect x="26" y="36" width="44" height="12" rx="2"/>
+    <rect x="41" y="36" width="14" height="68"/>
+    <rect x="26" y="92" width="44" height="12" rx="2"/>
+  </g>
+
+  <!-- 上标 P：白色，圆碗 -->
+  <g>
+    <rect x="84" y="24" width="10" height="38" fill="#e8e8e8"/>
+    <circle cx="96" cy="36" r="12" fill="#e8e8e8"/>
+    <circle cx="96" cy="36" r="4.5" fill="#0b0f14"/>
+  </g>
+</svg>

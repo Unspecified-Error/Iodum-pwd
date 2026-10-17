@@ -1,0 +1,16 @@
+# Node / Vite
+node_modules/
+dist/
+*.local
+
+# Rust / Tauri（workspace 构建产物在上级 target/，不在此仓库内）
+src-tauri/target/
+src-tauri/gen/
+
+# 环境与密钥
+.env
+.env.*
+
+# 编辑器
+.vscode/
+.idea/
