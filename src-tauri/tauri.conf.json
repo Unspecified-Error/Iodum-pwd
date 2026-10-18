@@ -13,13 +13,14 @@
     "windows": [
       {
         "title": "Iodum",
-        "width": 1165,
-        "height": 690,
-        "minWidth": 1165,
-        "minHeight": 690,
-        "maxWidth": 1165,
-        "maxHeight": 690,
-        "resizable": true
+        "width": 1149,
+        "height": 665,
+        "minWidth": 1149,
+        "minHeight": 665,
+        "maxWidth": 1149,
+        "maxHeight": 665,
+        "resizable": false,
+        "decorations": false
       }
     ],
     "security": {

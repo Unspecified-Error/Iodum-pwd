@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import logoUrl from "../logo.svg";
 
 const MIN_LEN = 6;
 const MAX_LEN = 2048;
@@ -105,24 +107,27 @@ function HistoryChart({ history }) {
 }
 
 function CharsetChart({ mix }) {
-  const max = Math.max(1, ...mix.map(([, c]) => c));
+  const total = Math.max(1, mix.reduce((s, [, c]) => s + c, 0));
   return (
     <div className="charset">
-      {mix.map(([name, count]) => (
-        <div className="charset-row" key={name}>
-          <span className="charset-label">{name} {count}</span>
-          <div className="charset-track">
-            <div
-              className="charset-bar"
-              style={{
-                width: `${(count / max) * 100}%`,
-                background: count > 0 ? GOLD : "transparent",
-                boxShadow: count > 0 ? "none" : `inset 0 0 0 1px ${DIM}`,
-              }}
-            />
+      {mix.map(([name, count]) => {
+        const pct = (count / total) * 100;
+        return (
+          <div className="charset-row" key={name}>
+            <span className="charset-label">{name} {count} · {pct.toFixed(1)}%</span>
+            <div className="charset-track">
+              <div
+                className="charset-bar"
+                style={{
+                  width: `${pct}%`,
+                  background: count > 0 ? GOLD : "transparent",
+                  boxShadow: count > 0 ? "none" : `inset 0 0 0 1px ${DIM}`,
+                }}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -173,6 +178,23 @@ function PasswordText({ pass, show }) {
       {cells.map((s, i) => <span key={i} style={{ color: s.c }}>{s.t}</span>)}
       {pass.length > 100 && <span style={{ color: DIM }}>...</span>}
     </span>
+  );
+}
+
+/* ---------- 内嵌标题栏 ---------- */
+
+function TitleBar() {
+  const appWindow = useMemo(() => getCurrentWindow(), []);
+  return (
+    <div className="titlebar" data-tauri-drag-region>
+      <img className="titlebar-logo" src={logoUrl} alt="" data-tauri-drag-region draggable={false} />
+      <span className="titlebar-title" data-tauri-drag-region>Iodum</span>
+      <span className="titlebar-sub" data-tauri-drag-region>deterministic password generator</span>
+      <div className="titlebar-actions">
+        <button className="tb-btn" title="最小化" onClick={() => appWindow.minimize()}>&#x2500;</button>
+        <button className="tb-btn tb-close" title="关闭" onClick={() => appWindow.close()}>&#x2715;</button>
+      </div>
+    </div>
   );
 }
 
@@ -276,7 +298,9 @@ export default function App() {
   const mix = gen?.mix ?? [["low", 0], ["up", 0], ["dig", 0], ["sym", 0]];
 
   return (
-    <div className="dash">
+    <div className="root">
+      <TitleBar data-tauri-drag-region/>
+      <div className="dash">
       <div className="dash-main">
         <div className="col-left">
           <fieldset className="card">
@@ -347,7 +371,7 @@ export default function App() {
           <div className="chart-title">
             {tab === "history" && `Entropy History (${history.length} of ${HISTORY_CAP})`}
             {tab === "seeds" && `Recorded Seeds (${records.length})`}
-            {tab === "charset" && "Charset Counts"}
+            {tab === "charset" && "Charset Composition (share of total)"}
           </div>
           <div className="chart-area">
             {tab === "history" && <HistoryChart history={history} />}
@@ -363,6 +387,7 @@ export default function App() {
           <span className="progress-label">{length} / {MAX_LEN} · {(ratio * 100).toFixed(0)} %</span>
         </div>
         <span className="progress-bits">( Entropy {gen ? gen.entropy.toFixed(0) : "-"} bits )</span>
+      </div>
       </div>
     </div>
   );
