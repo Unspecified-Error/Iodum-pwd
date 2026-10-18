@@ -299,7 +299,7 @@ export default function App() {
 
   return (
     <div className="root">
-      <TitleBar data-tauri-drag-region/>
+      <TitleBar/>
       <div className="dash">
       <div className="dash-main">
         <div className="col-left">
